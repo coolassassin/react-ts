@@ -1,7 +1,6 @@
 var tasks = [
-  { order: '1.1', id: 'SimpleHtml' },
-  { order: '1.2', id: 'Button' },
-  { order: '1.3', id: 'Input' },
+  { order: '1.1', id: 'Button' },
+  { order: '1.2', id: 'Input' },
   { order: '2.1', id: 'ExtractFunction' },
   { order: '2.2', id: 'List' },
   { order: '2.3', id: 'Condition' },

@@ -3,14 +3,12 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 
 /**
-    InputFormRow позволяет клепать формы еще быстрее, чем раньше!
-    Количество дублирования кода уменьшается, а еще благодаря нему
-    можно добавить новые фишки во все поля формы сразу.
+    InputFormRow allows you to create forms even faster than before! The amount of code duplication is reduced, and thanks to it, you can add new features to all form fields at once.
 
-    Сделай так, чтобы при клике по любому месту InputFormRow фокус переводился в поле ввода.
+    Make it so that clicking anywhere on InputFormRow transfers focus to the input field.
 
-    Обрати внимание:
-    - Как все props, кроме нужных, элегантно пробрасываются в input.
+    Note:
+    - Ensure that all props, except those needed, are elegantly passed through to the input.
  */
 
 type InputFormRowProps = React.InputHTMLAttributes<HTMLInputElement> & {
@@ -40,10 +38,10 @@ const root = createRoot(domNode);
 root.render(
   <div className="form">
     <form>
-      <InputFormRow label="Фамилия" type="text" defaultValue="Иванов" />
-      <InputFormRow label="Имя" type="text" defaultValue="Иван" />
-      <InputFormRow label="Отчество" type="text" defaultValue="Иванович" />
-      <InputFormRow label="Вегетарианец" type="checkbox" defaultChecked />
+      <InputFormRow label="Surname" type="text" defaultValue="Ivanov" />
+      <InputFormRow label="Name" type="text" defaultValue="Ivan" />
+      <InputFormRow label="Patronymic" type="text" defaultValue="Ivanovich" />
+      <InputFormRow label="Vegetarian" type="checkbox" defaultChecked />
     </form>
     <div className="saveContainer">
       <input type="submit" className="actionButton" value="Сохранить" />
@@ -52,14 +50,14 @@ root.render(
 );
 
 /**
-    Подсказки:
-    - У элемента input есть метод focus(), но нужна ссылка.
-    - Есть два актуальных способа получить ссылку:
-      - <div ref={this.myRef}/>, но надо заранее создать this.myRef = React.createRef();
-        Тип для такого ref: React.RefObject<HTMLInputElement>
-      - <div ref={r => this.myRef = r} и тогда при вызове render в свойстве this.myRef окажется ссылка.
-        Тип такого ref для input: HTMLInputElement | null
-      В зависимости от выбранного способа в myRef будут немного разные объекты.
-    - Чтобы пользователь догадался, что он может кликнуть по ряду
-      и что-то произойдет, добавь в div с css-классом row класс pointer.
+    Tips:
+        - The input element has a focus() method, but you need a reference.
+        - There are two current ways to get a reference:
+        - <div ref={this.myRef}/>, but you need to create this.myRef = React.createRef() in advance;
+    Type for such a ref: React.RefObject<HTMLInputElement>
+    - <div ref={r => this.myRef = r}/> and then, during render, the this.myRef property will contain the reference.
+    Type for this type of ref for input: HTMLInputElement | null
+
+    Depending on the chosen method, myRef will be slightly different objects.
+    - To hint to the user that they can click on the row and something will happen, add the pointer class to the div with the CSS class "row."
  */

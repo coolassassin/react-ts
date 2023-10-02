@@ -3,17 +3,15 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 
 /**
-    1. Переделай renderPost в функциональный компонент Post
+    1. **Refactor `renderPost` into a functional component named `Post`**:
 
-    2. TypeScript проверяет переданные атрибуты.
-       У нас везде атрибуты — это строки. Сделай свойства author и time обязательными,
-       а message — необязательным.
+    2. **TypeScript checks the attributes being passed.**
+    - We have strings as attributes everywhere. Make `author` and `time` properties required and `message` optional.
 
-    3. Сделай так, чтобы в author подставлялось значение <Неизвестный автор>,
-       если атрибут не передали.
-       Проверь что работает, убрав имя автора.
+    3. **Ensure that `author` defaults to "<Unknown author>" if not provided.**
+    - Verify that it works by removing the author's name.
 
-    4. Переделай компонент так, чтобы message передавался через props.children.
+    4. **Refactor the component so that `message` is passed via `props.children`.**
  */
 type Post = {
   author: string;
@@ -40,39 +38,40 @@ root.render(
   <div className="page">
     <div className="posts">
       {renderPost({
-        author: 'Милая девушка',
-        time: '3 часа назад',
-        message: 'Можно использовать для выпекания чизкейков :)'
+        author: 'Sweet girl',
+        time: '3 hours ago',
+        message: 'Can be used for baking cheesecakes :)'
       })}
     </div>
   </div>
 );
 
 /**
-    Подсказки к 1:
-    - {renderMyComponent({a: 1, b: 'some'})} → <MyComponent a={1} b="some">
-    - Первый аргумент функции компонента обычно называется props, либо деконструируется
+    Here are the translations of the provided hints:
 
-    Подсказки к 2:
+    **Hints for 1:**
+    - `{renderMyComponent({a: 1, b: 'some'})}` → `<MyComponent a={1} b="some">`
+    - The first argument of a component function is usually called `props` or destructured.
+
+    **Hints for 2:**
     type MyComponentProps = {
         requiredValue: string;
         optionalValue?: string;
     }
 
-    Подсказки к 3:
-    - В типе Props надо сделать необязательными все ключи,
-    для которых предполагается значение по умолчанию
+    **Hints for 3:**
+    - In the `Props` type, make all keys optional for which default values are expected.
     type MyComponentProps = {
         valueWithDefault?: string;
     }
-    - Деконструкция параметра функции позволяет указывать значения по умолчанию
-    function MyComponent({valueWithDefault = 'по умолчанию'}: MyComponentProps)
+    - Destructuring a function parameter allows specifying default values.
+    function MyComponent({valueWithDefault = 'default'}: MyComponentProps)
 
-    Подсказки к 4:
-    - Дети — это вложенные узлы тэга.
-      Пример с одним ребенком: <MyComponent>Значение</MyComponent>
-    - Дети попадают в props в виде массива props.children.
-    - Для типизации Props нужно добавить опциональное свойство children с типом ReactNode
+    **Hints for 4:**
+    - Children are the nested nodes within a tag.
+    Example with one child: `<MyComponent>Value</MyComponent>`
+    - Children are accessed in `props` as an array via `props.children`.
+    - To type Props, add an optional `children` property with a `ReactNode` type.
     type MyComponentProps = {
         requiredValue: string;
         optionalValue?: string;

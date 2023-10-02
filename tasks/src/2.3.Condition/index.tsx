@@ -3,22 +3,23 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 
 /**
-    Не выделяя дополнительных методов
-    1. Сделай так, чтобы renderPosts возвращал:
-      - div с классом emptyPosts и текстом "Нет откликов",
-        если posts пуст: <div className="emptyPosts">Нет откликов</div>
-      - div с классом singlePost и текстом "Единственный отклик",
-        если в posts ровно 1 элемент: <div className="singlePost">Единственный отклик</div>
-      - div с классом posts в остальных случаях: <div className="posts">Отклики в количестве {posts.length}</div>
-    2. Если name лота пустое или неопределено, то вместо него должна появляться надпись '<Неизвестный предмет>'
-    3. Если description лота пустое или неопределено, то тэг с классом lotDescription должен отсутствовать
-    4. Если у лота нет тэгов, то div с классом lotTags должен отсутствовать
+     1. Without creating additional methods:
+         - Modify `renderPosts` to return:
+         - A `div` with the class `emptyPosts` and text "No responses" if `posts` is empty: `<div className="emptyPosts">No responses</div>`
+         - A `div` with the class `singlePost` and text "Single response" if `posts` contains exactly 1 element: `<div className="singlePost">Single response</div>`
+         - A `div` with the class `posts` in all other cases: `<div className="posts">Responses count: {posts.length}</div>`
+
+     2. If the `name` of the lot is empty or undefined, display "<Unknown item>" instead.
+
+     3. If the `description` of the lot is empty or undefined, the `lotDescription` tag should be absent.
+
+     4. If the lot has no tags, the `lotTags` `div` should be absent.
  */
 
 function renderPosts(posts: string[]) {
-  //<div className="emptyPosts">Нет откликов</div>
-  //<div className="singlePost">Единственный отклик</div>
-  return <div className="posts">Отклики в количестве {posts.length}</div>;
+  //<div className="emptyPosts">No responses</div>
+  //<div className="singlePost">Single response</div>
+  return <div className="posts">Responses count: {posts.length}</div>;
 }
 
 function renderLot(name: string, description: string | undefined, tags: string[]) {
@@ -41,16 +42,16 @@ const root = createRoot(domNode);
 root.render(
   <div>
     <div className="page">
-      {renderLot('', 'красный, красивый, твой!', [])}
+      {renderLot('', 'red, beautiful, yours!', [])}
       {renderPosts([])}
     </div>
     <div className="page">
-      {renderLot('Пирожок с капустой', undefined, ['#свежий', '#ручнаяРабота'])}
-      {renderPosts(['Тут ровно один отклик'])}
+      {renderLot('Cabbage Pie', undefined, ['#fresh', '#handmade'])}
+      {renderPosts(['Exactly one response here'])}
     </div>
     <div className="page">
-      {renderLot('', '', ['#большой', '#Яркий'])}
-      {renderPosts(['Класс!', 'Хочу еще!', 'Отстой'])}
+      {renderLot('', '', ['#big', '#bright'])}
+      {renderPosts(['Great!', 'I want more!', 'Terrible'])}
     </div>
   </div>
 );

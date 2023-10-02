@@ -1,30 +1,14 @@
 # React-TS
 
-При создании клиентской части современных веб-приложений стоит использовать какой-нибудь фреймворк. Один из лучших таких фреймворков — React. Компонентный подход, смешение HTML и JS в виде JSX, VirtualDOM позволяют быстро разрабатывать быстрые приложения.
+When creating the client-side of modern web applications, it's advisable to use some framework. One of the best such frameworks is React. Its component-based approach, the blending of HTML and JS in the form of JSX, and VirtualDOM allow for the rapid development of fast applications.
 
-Пройдя блок, ты поймешь разницу между HTML и JSX, научишься создавать компоненты, узнаешь как оптимизировать производительность React, познакомишься с Higher Order Components и Context.
+By going through this section, you will understand the difference between HTML and JSX, learn how to create components, discover how to optimize React's performance, get acquainted with Higher Order Components and Context.
 
-Также в блоке будут примеры типизации React-компонентов с помощью TypeScript.
-
-
-## Необходимые знания
-
-Понадобится знание JS
-
-Знание TS пригодится, но не является обязательным
+Additionally, in this section, there will be examples of typing React components using TypeScript.
 
 
-## Самостоятельная подготовка
+## Required knowledge
 
-Рекомендуется пройти блок [Frontend Starter](https://github.com/kontur-web-courses/frontend-starter-tutorial)
+Knowledge of JS will be required.
 
-Предполагаем, что ты уже знаком с ES2015+ синтаксисом JavaScript. Если нет, прочти эту [статью](http://www.js-craft.io/blog/10-The-10-min-ES6-course-for-the-beginner-React-Developer/) или потренируйся в новом синтаксисе [тут](http://es6katas.org/).
-
-Если хочется лучше понимать примеры синтаксиса с TypeScript, то можно пройти блок [TypeScript](https://github.com/kontur-web-courses/typescript)
-
-
-## Очная встреча
-
-~ 8 часов
-
-[Презентация](https://kontur-web-courses.github.io/react-ts/)
+Knowledge of TS will be useful but is not mandatory.

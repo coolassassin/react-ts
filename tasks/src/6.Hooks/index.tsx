@@ -3,12 +3,12 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 
 /**
-    Сделай так, чтобы в приложении все классы заменились на функциональные компоненты, для этого используй Hooks
+  Make all classes in the application replaced with functional components; use Hooks for this.
 
-    Импортировать нужные хуки можно так:
-        import React, { useState } from "react";
+  You can import the necessary hooks like this:
+  import React, { useState, useRef, useEffect } from "react";
 
-    Список хуков, которые могут пригодиться: useState, useRef, useEffect
+  List of hooks that might be useful: `useState`, `useRef`, `useEffect`.
  */
 
 type AppState = {

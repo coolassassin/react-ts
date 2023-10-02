@@ -121,18 +121,3 @@ const timer = new Timer();
 const domNode = document.getElementById('app') as HTMLElement;
 const root = createRoot(domNode);
 root.render(<ColorsOfTime timer={timer} />);
-
-/**
- Подсказки:
- - Создание контекста:
- const CakeContext = React.createContext();
- - Поставка значения:
- <CakeContext.Provider value={cheeseCake}>
- ...
- </CakeContext.Provider>
- - Потребление значения:
- <CakeContext.Consumer>
- {cake => <Hungry food={cake} />}
- </CakeContext.Consumer>
- - const cake = React.useContext(CakeContext);
- */

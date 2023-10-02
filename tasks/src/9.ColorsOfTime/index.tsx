@@ -9,45 +9,35 @@ import Timer from './Timer';
 import { Theme } from './themes';
 
 /**
-    Автор кода явно сделал много лишней работы,
-    прокидывая информацию о времени и настройках цвета через все компоненты.
-    А все потому, что не знал про context!
+  The author of the code clearly did a lot of unnecessary work by passing information about time and color settings through all components. All of this could have been simplified by using context!
 
-    Для начала разведка ситуации:
-    1. Открой Developer Tools и убедись, что render в Card вызывается по 5 раз каждую секунду.
-    2. Убедись, что render в Card вызывается при использовании кнопок смены цвета.
-    3. Почему render в Top вызывается каждую секунду, если Top — это PureComponent у которого в props нет currentTime?
-    4. Подумай, что нужно сделать, чтобы перенести карточку Нью-Йорка в блок Top, а кнопки смены цвета в блок Bottom.
+  First, assess the situation:
+  1. Open Developer Tools and ensure that render in Card is called 5 times every second.
+  2. Confirm that render in Card is called when using color change buttons.
+  3. Explain why render in Top is called every second, even though Top is a PureComponent and does not have currentTime in its props.
+  4. Think about what needs to be done to move the New York card to the Top block and the color change buttons to the Bottom block.
 
-    Отрефактори код по шагам:
-    1. Создай CurrentTimeContext.
-    2. В компоненте ColorsOfTime в методе render оберни <div className="page">...</div> в CurrentTimeContext.Provider,
-       чтобы предоставить максимально большой доступ к value провайдера. В качестве value в тэге Provider задай currentTime.
-    3. Используй CurrentTimeContext.Consumer, чтобы не прокидывать currentTime через свойства.
-       Тут стратегия минимизации: надо оборачивать в Consumer только те компоненты, которым ресурс требуется.
-       Потому что при обновлении значения контекста будет перерисовываться все, что внутри Consumer'ов.
-    4. Не забудь убрать ненужное теперь протаскивание currentTime через параметры!
-    5. Открой Developer Tools и посмотри, как часто вызывается render в Card с течением времени.
-       Попробуй объяснить, почему использование context привело к такому эффекту.
-    6. Проделай то же самое для ThemeContext:
-       - Создай ThemeContext
-       - Оберни CurrentTimeContext.Provider в ThemeContext.Provider
-       - Используй ThemeContext.Consumer или React.useContext для передачи темы в кнопки и в Card с цветным локальным временем
-       - Снова приберись в коде!
-    7. Добавь ChangeThemeContext. Пусть он хранит ссылку на функцию dispatchChangeTheme.
-       Пусть кнопки смены цвета теперь создают обработчики на основе ChangeThemeContext,
-       а не получают их через onPrevTheme и onNextTheme.
-       Приберись в коде.
-    8. Открой Developer Tools, и убедись, перестал происходить render в Top. Объясни, почему так.
-    9. Перенеси Лондон в блок Top, за ним в блок Top перенеси Нью-Йорк, Париж и Пекин.
-       А кнопки смены цвета перенеси в блок Bottom.
-       Удобно ли было переносить эти компоненты сейчас?
-   10. Если контекст используется часто, можно создать специальный HOC компонент, чтобы оборачивать компоненты в Consumer.
-       Найди в themes.js Context и используй в качестве ThemeContext:
-          const ThemeContext = themes.Context;
-       Теперь ты можешь определить кнопку так:
-          const ThemedButton = themes.withTheme(Button);
-       Используй ее!
+  Refactor the code step by step:
+  1. Create CurrentTimeContext.
+  2. In the ColorsOfTime component, wrap <div className="page">...</div> in CurrentTimeContext.Provider in the render method to provide maximum access to the value of the provider. Set currentTime as the value in the Provider tag.
+  3. Use CurrentTimeContext.Consumer to avoid passing currentTime through properties. The strategy here is minimization: wrap in Consumer only those components that need the resource because updating the context value will cause everything inside Consumers to be redrawn.
+  4. Don't forget to remove unnecessary passing of currentTime through parameters!
+  5. Open Developer Tools and see how often render in Card is called over time. Try to explain why using context led to this effect.
+  6. Do the same for ThemeContext:
+    - Create ThemeContext.
+    - Wrap CurrentTimeContext.Provider in ThemeContext.Provider.
+    - Use ThemeContext.Consumer or React.useContext to pass the theme to buttons and to Card with colored local time.
+    - Clean up the code again!
+  7. Add ChangeThemeContext. Let it store a reference to the dispatchChangeTheme function. Let the color change buttons now create handlers based on ChangeThemeContext instead of getting them through onPrevTheme and onNextTheme. Clean up the code.
+  8. Open Developer Tools and ensure that render in Top no longer occurs. Explain why.
+  9. Move London to the Top block, and behind it, move New York, Paris, and Beijing to the Top block. Move the color change buttons to the Bottom block. Was it convenient to move these components now?
+  10. If context is used frequently, you can create a special HOC component to wrap components in Consumer. Find the Context in themes.js and use it as ThemeContext:
+  const ThemeContext = themes.Context;
+
+  Now you can define the button like this:
+  const ThemedButton = themes.withTheme(Button);
+
+  Use it!
  */
 
 type ColorsOfTimeProps = { timer: Timer };
@@ -158,16 +148,17 @@ const root = createRoot(domNode);
 root.render(<ColorsOfTime timer={timer} />);
 
 /**
-    Подсказки:
-    - Создание контекста:
-      const CakeContext = React.createContext();
-    - Поставка значения:
-      <CakeContext.Provider value={cheeseCake}>
-        ...
-      </CakeContext.Provider>
-    - Потребление значения:
-      <CakeContext.Consumer>
-        {cake => <Hungry food={cake} />}
-      </CakeContext.Consumer>
-    - const cake = React.useContext(CakeContext);
+   Hints:
+   - Creating a context:
+   const CakeContext = React.createContext();
+   - Providing a value:
+   <CakeContext.Provider value={cheeseCake}>
+   ...
+   </CakeContext.Provider>
+   - Consuming a value:
+   <CakeContext.Consumer>
+   {cake => <Hungry food={cake} />}
+   </CakeContext.Consumer>
+   - Alternatively, using `useContext`:
+   const cake = React.useContext(CakeContext);
  */

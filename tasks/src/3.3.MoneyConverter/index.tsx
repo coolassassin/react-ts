@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 
 /**
-    Допиши конвертер валют.
-    - Если пользователь ввел значение в рублях, то количество евро обновляется согласно курсу
-    - Если пользователь ввел значение в евро, то количество рублей обновляется согласно курсу
+ Finish the currency converter.
+ - If the user enters a value in rubles, the amount in euros is updated according to the exchange rate.
+ - If the user enters a value in euros, the amount in rubles is updated according to the exchange rate.
  */
 
 const RUBLES_IN_ONE_EURO = 70;
@@ -15,7 +15,7 @@ class MoneyConverter extends React.Component {
     return (
       <div className="root">
         <div className="form">
-          <h2>Конвертер валют</h2>
+          <h2>Currency converter</h2>
           <div>
             <span>&#8381;</span>
             <Money />
@@ -64,10 +64,8 @@ const root = createRoot(domNode);
 root.render(<MoneyConverter />);
 
 /**
-    Подсказки:
-    - Сейчас каждый компонент Money хранит свое значение в собственном состоянии,
-      чтобы конвертер работал, нужно уметь обновлять значение извне, поэтому нужно получать его из props.
-    - В MoneyConverter наоборот надо создать состояние, которое будет хранить значения в обеих валютах.
-      Таким образом ты сделаешь Lift State Up.
-    - Заметь, что компонент Money теперь не содержит состояние и его можно переделать в функциональный компонент.
+ Hints:
+ - Currently, each Money component stores its own value in its internal state. To make the converter work, you need to be able to update the value from the outside, so you should get it from props.
+ - Conversely, in MoneyConverter, you need to create state that will store values in both currencies. This way, you'll be implementing the "Lift State Up" pattern.
+ - Note that the Money component no longer contains state and can be refactored into a functional component.
  */

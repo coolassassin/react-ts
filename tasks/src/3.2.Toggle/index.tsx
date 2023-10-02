@@ -4,9 +4,9 @@ import './styles.css';
 import './toggle.css';
 
 /**
-    Допиши компонент Toggle.
-    Пусть флаг хранится во внутреннем состоянии,
-    а при изменении передается наружу через onChange.
+    Complete the Toggle component.
+    Let the flag be stored in the internal state,
+    and when it changes, pass it outside through onChange.
  */
 
 type ToggleProps = {
@@ -38,13 +38,13 @@ const domNode = document.getElementById('app') as HTMLElement;
 const root = createRoot(domNode);
 root.render(
   <div className="page">
-    <Toggle onChange={value => console.log(value)} /> Использовать умные компоненты
+    <Toggle onChange={value => console.log(value)} /> Use smart components
   </div>
 );
 
 /**
-    Подсказки:
-    - Начальное состояние компонента хранится в this.state и обычно инициируется в конструкторе.
-    - Не забудь добавить super(props) первой строчкой конструктора, чтобы вызвать конструктор базового типа.
-    - this.setState({property: value}) обновляет часть состояния и инициирует перерисовку.
+    Hints:
+    - The initial state of the component is stored in `this.state` and is typically initialized in the constructor.
+    - Don't forget to add `super(props)` as the first line of the constructor to call the base type's constructor.
+    - `this.setState({property: value})` updates part of the state and triggers a rerender.
  */

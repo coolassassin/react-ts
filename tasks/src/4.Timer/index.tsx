@@ -3,11 +3,11 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 
 /**
-    1. Допиши TimeDisplay так, чтобы он показывал текущее время пользователя и сам обновляется каждую секунду.
-    2. Пусть при каждом обновлении времени в консоль пишется сообщение:
-          console.log('tick');
-    3. Позаботься об освобождении ресурсов в случае удаления элемента.
-       Убедись, что если компонент скрыть кнопкой, то в консоль не будут писаться тики.
+    1. Complete the TimeDisplay so that it shows the current user's time and updates itself every second.
+    2. Have a message written to the console with each time update:
+    console.log('tick');
+    3. Take care of releasing resources in case the element is removed.
+    Ensure that if the component is hidden by a button, ticks will not be written to the console.
  */
 
 type TimerState = {
@@ -27,7 +27,7 @@ class Timer extends React.Component<{}, TimerState> {
         <input
           className="button"
           type="button"
-          value={timeVisible ? 'Скрыть' : 'Показать'}
+          value={timeVisible ? 'Hide' : 'Show'}
           onClick={() => {
             this.setState({ timeVisible: !timeVisible });
           }}
@@ -60,16 +60,12 @@ const root = createRoot(domNode);
 root.render(<Timer />);
 
 /**
-    Подсказки:
-    - Функция window.setInterval регистрирует обработчик handler,
-      который будет вызываться не чаще, чем в заданное количество миллисекунд.
-      Оформляется так:
-          const intervalId = window.setInterval(handler, intervalInMilliseconds);
-    - intervalId можно передать в функцию clearInterval, чтобы остановить вызов обработчика:
-          window.clearInterval(intervalId);
-    - this.setState({property: value}) обновляет часть состояния и инициирует перерисовку.
-    - componentDidMount вызывается сразу после того, как компонент размещен на странице.
-      В нем можно делать запросы на получение данных или подписываться на события.
-    - componentWillUnmount вызывается перед тем как удалить компонент.
-      Гарантированно вызовется, если элемент «did mount». Отличное место, чтобы освобождать ресурсы.
- */
+    Tips:
+    - The window.setInterval function registers a handler that will be called no more frequently than the specified number of milliseconds. It is formatted as follows:
+    const intervalId = window.setInterval(handler, intervalInMilliseconds);
+    - You can pass intervalId to the clearInterval function to stop calling the handler:
+    window.clearInterval(intervalId);
+    - this.setState({property: value}) updates a part of the state and triggers a redraw.
+    - componentDidMount is called immediately after the component is placed on the page. You can make data retrieval requests or subscribe to events here.
+    - componentWillUnmount is called before removing the component. It is guaranteed to be called if the element "did mount." An excellent place to free up resources.
+*/

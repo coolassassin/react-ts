@@ -6,16 +6,11 @@ import * as helpers from '../helpers';
 import defaultUsers, { User } from '../defaultUsers';
 
 /**
-    Проблемы в исходной версии.
-
-    Проблема 1. Использовать editingUser &&, иначе лишние маунты при попытке редактирования.
-    Проблема 2. UserTable надо сделать PureComponent, иначе при попытке редактирования таблица перерисовывается.
-    Проблема 3. Использовать user.id вместо index.
-                Чтобы помогло надо сначала UserTableRow сделать PureComponent,
-                либо написать в нем собственный shouldComponentUpdate
-                После этого добавление станет работать эффективнее.
-    Проблема 4. Написать свой propsAreEqual в UserTableRow все же придется,
-                потому что редактирование невидимых полей не должно приводить к рендерингу.
+  Problems in the original version:
+    Problem 1. Use `editingUser &&`, otherwise there are unnecessary mounts when trying to edit.
+    Problem 2. Make UserTable a PureComponent; otherwise, when trying to edit, the table is redrawn.
+    Problem 3. Use `user.id` instead of `index`. To make it helpful, you first need to make UserTableRow a PureComponent or write your own `shouldComponentUpdate` in it. After this, the addition will become more efficient.
+    Problem 4. You will still have to write your `propsAreEqual` in UserTableRow because editing invisible fields should not lead to rendering.
  */
 
 let generation = 1;
@@ -79,7 +74,7 @@ const UserTable = React.memo(({ users, onEditUser, onAddUser }: UserTableProps) 
             <th>Имя</th>
             <th>Возраст</th>
             <th>
-              <input type="submit" className="editButton" value="Добавить" onClick={onAddUser} />
+              <input type="submit" className="editButton" value="Add" onClick={onAddUser} />
             </th>
           </tr>
         </thead>
@@ -117,7 +112,7 @@ const UserTableRow = React.memo(
         <td>{user.firstName}</td>
         <td>{helpers.calculateAge(user.dateOfBirth)}</td>
         <td>
-          <input className="editButton" type="button" onClick={handleEditUser} value="Изменить" />
+          <input className="editButton" type="button" onClick={handleEditUser} value="Change" />
         </td>
       </tr>
     );

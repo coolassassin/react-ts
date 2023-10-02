@@ -3,12 +3,14 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 
 /**
-     1. Разбери ручные переборы массивов в верстке.
-        Для постов используй map без циклов, для авторов цикл for без map.
+    Here are the translations of the provided instructions:
 
-     2. Посмотри ошибки в Chrome DevTools: React должен требовать наличия атрибутов key.
-        Добавь в post поле id и присвой каждому полю уникальный строковый идентификатор.
-        Используй id в качестве значения key в основном тэге поста и основном тэге автора.
+    1. Analyze manual array iterations in the markup.
+    Use `map` without loops for posts, and use a `for` loop without `map` for authors.
+
+    2. Check for errors in Chrome DevTools: React requires the presence of `key` attributes.
+    Add an `id` field to each post and assign a unique string identifier to it.
+    Use the `id` as the `key` value in the main post tag and the main author tag.
  */
 
 type Post = {
@@ -72,14 +74,16 @@ root.render(
 );
 
 /**
-     Подсказки:
-     - Отображение массива в другой массив записывается так:
-       const values = items.map(item => item.field);
-     - В конец массивов можно добавлять значения методом push:
-       const numbers = [];
-       numbers.push(1);
-     - Выбери подходящий цикл for:
-       - for (let i = 0; i < items.length; i++) {}
-       - for (let key in items) {}
-       - for (const item of items) {}
+    Here are the translations of the provided hints:
+
+    - Displaying an array as another array is done like this:
+    `const values = items.map(item => item.field);`
+    - You can add values to the end of arrays using the `push` method:
+        const numbers = [];
+        numbers.push(1);
+
+    - Choose the appropriate `for` loop:
+    - `for (let i = 0; i < items.length; i++) {}`
+    - `for (let key in items) {}`
+    - `for (const item of items) {}`
  */

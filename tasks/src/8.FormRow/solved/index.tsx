@@ -70,8 +70,6 @@ const Form = () => {
 
   const setFocusOnOpen = () => {
     if (opened) {
-      // Проверка перед вызовом нужна,
-      // пока this.firstRowRef не устанавливается корректно.
       firstRowRef?.current?.focus?.();
     }
   };

@@ -6,30 +6,28 @@ import * as helpers from './helpers';
 import defaultUsers, { User } from './defaultUsers';
 
 /**
-    Есть таблица гостей и форма для добавления гостя. В таблице отображена только основная информация.
-    Всё работает, но неэффективно — при любом действии пользователя происходит множество лишних операций внутри React.
+  There is a guest table and a form for adding guests. The table displays only the basic information. Everything works, but inefficiently—many unnecessary operations occur within React with any user action.
 
-    В этом задании при вызове важных событий жизненного цикла выводятся сообщения в консоль.
-    Эти сообщения можно увидеть в Developer Tools.
+  In this task, messages are logged to the console during important lifecycle events. You can view these messages in the Developer Tools.
 
-    Добейся того, чтобы лишние события не происходили.
+  Ensure that unnecessary events do not occur.
 
-    Допустимые события React:
-    1. В начале происходит 6 событий и это нормально:
-       UserTable render, UserTableRow render (2), UserTableRow mount (2), UserTable mount
-    2. При добавлении новой строки должно быть 3 события:
-       UserTable render, UserTableRow render и UserTableRow mount для новой строки
-    3. При нажатии на кнопку изменить: никаких событий
-    4. При сохранении после изменения видимого поля: UserTable render, UserTableRow render этого ряда
-    5. При сохранении после изменения невидимого поля: UserTable render
+  Allowed React events:
+    1. At the beginning, 6 events occur, and this is normal:
+    UserTable render, UserTableRow render (2), UserTableRow mount (2), UserTable mount
+    2. When adding a new row, there should be 3 events:
+    UserTable render, UserTableRow render, and UserTableRow mount for the new row
+    3. When clicking the edit button: no events
+    4. When saving after changing the visible field: UserTable render, UserTableRow render of that row
+    5. When saving after changing the invisible field: UserTable render
 
-    FYI, в коде использованы такие фишки JS:
-    - «Spread-оператор для массива»
-      Создает новый массив, причем сначала в него добавляются все элементы objs, а затем еще один элемент.
-        [...objs, { id: 1 }]
-    - «Spread-оператор для объекта»
-      Создает новый объект, причем сначала заполняет его свойствами из obj, а затем добавляет новое свойство.
-        { ...obj, key: value }
+  FYI, the code uses the following JS features:
+  - "Spread operator for an array"
+  Creates a new array, adding all elements from objs first, and then one more element.
+  [...objs, { id: 1 }]
+  - "Spread operator for an object"
+  Creates a new object, filling it with properties from obj first, and then adding a new property.
+  { ...obj, key: value }
  */
 
 let generation = 1;
@@ -97,7 +95,7 @@ const UserTable = ({ users, onEditUser, onAddUser }: UserTableProps) => {
             <th>Имя</th>
             <th>Возраст</th>
             <th>
-              <input type="submit" className="editButton" value="Добавить" onClick={onAddUser} />
+              <input type="submit" className="editButton" value="Add" onClick={onAddUser} />
             </th>
           </tr>
         </thead>
@@ -134,7 +132,7 @@ const UserTableRow = ({ user, onEditUser }: UserTableRowProps) => {
       <td>{user.firstName}</td>
       <td>{helpers.calculateAge(user.dateOfBirth)}</td>
       <td>
-        <input className="editButton" type="button" onClick={handleEditUser} value="Изменить" />
+        <input className="editButton" type="button" onClick={handleEditUser} value="Change" />
       </td>
     </tr>
   );
@@ -150,21 +148,16 @@ const root = createRoot(domNode);
 root.render(<Users />);
 
 /**
-    Подсказки:
+    Hints:
 
-    - React перерисовывает узлы по порядку.
-      Если он увидит, что на месте div стоит span, то div будет полностью удален (unmount),
-      даже если нужный div идет следом за этим span.
-      Чтобы сохранить порядок узлов, оставляй «дырки» из null-узлов, undefined-узлов, false-узлов вот так:
-        {showSpan && <span>A little hint</span>}
-        <div>Main text</div>
-      Если span не нужен, то вместо него встанет невидимый false-узел, а div останется на своем месте.
+    - React redraws nodes sequentially. If it sees that a span replaces a div, the div will be completely removed (unmounted), even if the necessary div follows that span. To preserve the order of nodes, leave "gaps" with null nodes, undefined nodes, or false nodes like this:
+    {showSpan && <span>A little hint</span>}
+    <div>Main text</div>
+    If the span is not needed, an invisible false node will take its place, and the div will remain in its place.
 
-    - Изменение setState в компоненте приводит к его перерисовке. Часто вместе с детьми.
-      Но если дочерний компонент наследует PureComponent, то он не будет перерисован
-      если его props не поменялись. Это можно использовать для оптимизации рендеринга
+    - Changing setState in a component leads to its redraw, often along with its children. However, if a child component inherits PureComponent, it will not be redrawn if its props have not changed. This can be used to optimize rendering.
 
-    - Ключ к производительности — в правильном задании key.
+    - The key to performance lies in correctly assigning keys.
 
-    - В конце тебе пригодится shouldComponentUpdate(nextProps, nextState).
+    - You will need shouldComponentUpdate(nextProps, nextState) in the end.
  */
