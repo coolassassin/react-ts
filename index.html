@@ -44,28 +44,26 @@
 
 # React
 
-<p style="text-align: center;"><a href="https://github.com/kontur-web-courses/react-ts">https://github.com/kontur-courses/<b>react-ts</b></a></p>
-
 </script></section>
 
 <section data-markdown><script type="text/template">
 
-## Сначала самое ~~долгое~~ важное
+## First, the most ~~longest~~ important thing
 
-Скачиваем все необходимые пакеты Node.js:
+Download all the necessary Node.js packages:
 ```
 cd tasks
 npm install
 ```
 
-Затем запусти dev-сервер, чтобы видеть результаты решений задач:
+Then, run the dev server to see the results of task solutions:
 ```cmd
 npm run start
 ```
 
-Посмотреть можно будет на <a href="http://localhost:8080">http://localhost:8080</a>
+You can view it at <a href="http://localhost:8080">http://localhost:8080</a>
 
-Перестроение автоматическое, пока работает dev-сервер
+Automatic rebuilding is in place as long as the dev server is running.
 
 </script></section>
 
@@ -75,44 +73,51 @@ npm run start
 
 <section data-markdown><script type="text/template">
 
-## Зачем понадобился React?
+## Why did we need React?
 
 ***
 
-### Слои HTML, JS, CSS 😫
+### Layers of HTML, JS, CSS 😫
 
-	HTML =================================
-	CSS  ======
-	JS   ===
+<pre><code class="lang-js hljs">
+HTML =================================
+CSS  ======
+JS   ===
+</code>
+</pre>
 
-Удобно для документов, для данных, но не для приложений
+Convenient for documents, for data, but not for applications
 
 ***
 
-### Компонентный подход 😍
+### Component-based approach 😍
 
 ```
 HTML+CSS+JS   |   HTML+CSS+JS   |   HTML+CSS+JS
 ```
 
-- Каждый компонент = HTML + JS + CSS
-- Можно комбинировать и переиспользовать!
-- Изолированы: в отличие от обычного CSS
+- Each component = HTML + JS + CSS
+- Can be combined and reused!
+- Isolated: in contrast to regular CSS
 
 ***
 
-### HTML - недоязык 😞
+![children components](assets/components.png)
+
+***
+
+### HTML - a limited language 😞
 
 <pre><code class="lang-html hljs">
 &lt;script&gt;
-function handleClick() {
-	...
-}
+  function handleClick() {
+    ...
+  }
 &lt;/script&gt;
 
 &lt;input type="button" onclick="handleClick()"/&gt;</code></pre>
 
-Хочется методов и описания обработчиков сразу и рядом
+Want methods and handler descriptions right away
 
 ***
 
@@ -120,31 +125,31 @@ function handleClick() {
 
 ```js
 function ButtonWithHandle() {
-    function handleClick() {
-	    ...
-	}
+  function handleClick() {
+    ...
+  }
 
-	return <input type="button" onClick={handleClick}/>
+  return <input type="button" onClick={handleClick}/>
 }
 ```
 
 ***
 
-### DOM медленный 😕
+### Slow DOM 😕
 
-А вот JavaScript — быстрый за счет JIT-компиляции!
-
-***
-
-### VirtualDOM — берет на себя упячку 😎
-
-И обновляет DOM когда на самом деле что-то поменялось
+But JavaScript is fast, thanks to JIT compilation! 😎
 
 ***
 
-### Только View в MV* 🔨
+### VirtualDOM — takes the load off 😎
 
-React решает одну проблему и делает это хорошо
+And updates the DOM when something has actually changed
+
+***
+
+### Only View in MV* 🔨
+
+React addresses one problem and does it well
 
 </script></section>
 
@@ -154,48 +159,46 @@ React решает одну проблему и делает это хорошо
 
 <section data-markdown><script type="text/template">
 
-## 1. JSX — улучшенный HTML
+## 1. JSX — Enhanced HTML
 
 ***
 
-### Вставка React на страницу
+### Embedding React on the page
 
 ```js
 //index.html
 <div id="app"></div>
 ```
 
-**Способ 18+**
+**Method 18+**
 ```js
 //index.tsx
-const domNode = document.getElementById('app') as HTMLElement;
-const root = createRoot(domNode);
-root.render(
-<div className="fromReact"></div>);
+  const domNode = document.getElementById('app') as HTMLElement;
+  const root = createRoot(domNode);
+  root.render(<div className="fromReact"></div>);
 ```
-**Старый вариант**
+**Old way**
 ```js
 //index.tsx
-ReactDom.render(
-  <div className="fromReact"></div>,
+ReactDom.render(<div className="fromReact"></div>,
   document.getElementById('app')
 );
 ```
 
-- Можно вставить в любое место, даже в легаси
-- Можно несколько раз
+- Can be inserted anywhere, even in legacy code
+- Can be used multiple times
 
 ***
 
-### Отличия верстки на JSX
+### Differences in JSX Markup
 
-Верстка на JSX похожа на HTML, но есть отличия
+JSX markup is similar to HTML, but there are differences
 
 ***
 
-### Элементы
+### Elements
 
-React-обертки для встроенного в HTML
+React wrappers for embedded HTML
 
 **HTML**
 <pre><code class="lang-html hljs">&lt;div&gt;&lt;/div&gt; &lt;span&gt;&lt;/span&gt;</code></pre>
@@ -205,7 +208,7 @@ React-обертки для встроенного в HTML
 
 ***
 
-### Имена элементов в нижнем регистре
+### Element names in lowercase
 
 **HTML**
 <pre><code class="lang-html hljs">&lt;div&gt;&lt;/div&gt; или &lt;DIV&gt;&lt;/DIV&gt; или &lt;Div&gt;&lt;/diV&gt;</code></pre>
@@ -215,19 +218,23 @@ React-обертки для встроенного в HTML
 
 ***
 
-### Тэги должны быть закрытыми
+### Tags must be self-closing
 
-Либо закрывающий тэг
-<pre><code class="lang-html hljs">&lt;div&gt;Hello&lt;/div&gt;</code></pre>
+Either with a closing tag:
+```html
+<div>Hello</div>
+```
 
-Либо слэш в конце
-<pre><code class="lang-html hljs">&lt;br /&gt;</code></pre>
+Or with a slash at the end:
+```html
+<br />
+```
 
 ***
 
-### Именование свойств в camelCase
+### Property naming in camelCase
 
-Вместо dash-case
+Instead of dash-case
 
 **HTML**
 <pre><code class="lang-html hljs">&lt;input type="text" tabindex="0" onclick="alert()"&gt;</code></pre>
@@ -235,23 +242,24 @@ React-обертки для встроенного в HTML
 **JSX**
 <pre><code class="lang-html hljs">&lt;input type="text" tabIndex="0" onClick="alert" /&gt;</code></pre>
 
+
 ***
 
-### Два способа передачи значения атрибута
+### Two ways to pass attribute values
 
-Через `""` как в HTML
+Through `""` as in HTML
 
 <pre><code class="lang-html hljs">&lt;input type="text" tabIndex="0" /&gt;</code></pre>
 
-Через `{}` с возможностью вставки произвольного JS
+Through `{}` with the ability to insert arbitrary JS code
 
 <pre><code class="lang-html hljs">&lt;input type={"text"} tabIndex={a + 5} onClick={() => alert()} /&gt;</code></pre>
 
-В этом случае в IDE работает подсветка и рефакторинги
+In this case, syntax highlighting and refactorings work in IDE
 
 ***
 
-### Вставка вычисляемых значений в верстку
+### Inserting computed values into markup
 
 <pre><code class="lang-html hljs">&lt;div&gt;{Math.round(1000/3)}&lt;/div&gt;</code></pre>
 
@@ -282,7 +290,7 @@ function render() {
 **JSX**
 <pre><code class="lang-html hljs">&lt;div className="red"&gt;&lt;/div&gt;</code></pre>
 
-class — слишком популярное слово
+class — too popular word (already used in js)
 
 
 ***
@@ -290,24 +298,23 @@ class — слишком популярное слово
 ### for → htmlFor
 
 **HTML**
-<pre><code class="lang-html hljs">&lt;label for="something"&gt;Нечто&lt;/label&gt;&lt;input id="something" type="text"&gt;</code></pre>
+<pre><code class="lang-html hljs">&lt;label for="something"&gt;Something&lt;/label&gt;
+<input id="something" type="text"/></code></pre>
 
 **JSX**
-<pre><code class="lang-html hljs">&lt;label htmlFor="something"&gt;Нечто&lt;/label&gt;&lt;input id="something" type="text" /&gt;</code></pre>
+<pre><code class="lang-html hljs">&lt;label htmlFor="something"&gt;Someting&lt;/label&gt;
+&lt;input id="something" type="text" /&gt;</code></pre>
 
 
 ***
 
-### style — это JS-объект
+### style — it is just a JS-object
 
 **HTML**
 <pre><code class="lang-html hljs">&lt;div style="text-align: center; width: 5em; height: 100px"&gt;</code></pre>
 
 **JSX**
 <pre><code class="lang-html hljs">&lt;div style={{textAlign: "center", width: "5em", height: 100 }}&gt;</code></pre>
-
-Записываем в виде JSON: `{key1: value1, key2: value2}`
-Передаем через `{}`
 
 ***
 
@@ -323,21 +330,20 @@ class — слишком популярное слово
 &lt;input type="checkbox" defaultChecked /&gt;
 </code></pre>
 
-- Так логичнее
-- Атрибуты value и checked в React используются для контроля текущего значения
+- This is more logical
+- In React, `value` and `checked` attributes are used to control the current value
 
 ***
 
-### Задача 1.1. SimpleHtml
-### Задача 1.2. Button
-### Задача 1.3. Input
+### Task 1.1. Button
+### Task 1.2. Input
 
 ***
 
 ### Babel: JSX → JS
 
 ```js
-var userName = 'По умолчанию';
+var userName = 'Default user';
 
 var mydom = _react2.default.createElement(
   'div',
@@ -374,7 +380,7 @@ _reactDom2.default.render(mydom, document.getElementById('app'));
 
 ***
 
-### VirtualDOM — получается при рендеринге
+### VirtualDOM — generated during rendering
 
 ```json
 {
@@ -405,7 +411,7 @@ _reactDom2.default.render(mydom, document.getElementById('app'));
                 "ref": null,
                 "props": {
                   "htmlFor": "name",
-                  "children": "Имя"
+                  "children": "Name"
                 },
                 "_owner": null,
                 "_store": {
@@ -461,27 +467,27 @@ _reactDom2.default.render(mydom, document.getElementById('app'));
 
 <section data-markdown><script type="text/template">
 
-## 2. Функции, циклы, ветвления
+## 2. Functions, Loops, Branching
 
 ***
 
-Пора получать преимущества от перехода на JSX!
+#### It's time to reap the benefits of transitioning to JSX!
 
 ***
 
-### Функции и методы
+### Functions and Methods
 
-позволяют избавляться от дублирования!
-
-***
-
-### Задача 2.1. ExtractFunction
+help us to eliminate duplication!
 
 ***
 
-### Циклы и map
+### Task 2.1. ExtractFunction
 
-**Цикл**
+***
+
+### Loops and `map`
+
+**Loop**
 ```js
 const listItems = [];
 const numbers = [1, 2, 3, 4, 5];
@@ -500,7 +506,7 @@ const listItems = numbers.map((number) =>
 
 ***
 
-### Ключи
+### Keys
 
 ```js
 const todoItems = todos.map((todo) =>
@@ -510,12 +516,12 @@ const todoItems = todos.map((todo) =>
 );
 ```
 
-Позволяют React отличать элементы друг от друга
-Это важно при перерисовке
+Allow React to distinguish elements from each other
+This is important during redraws
 
 ***
 
-### Антипаттерн индекс
+### Anti-pattern: Index
 
 ```js
 const numbers = [1, 2, 3, 4, 5];
@@ -524,18 +530,17 @@ const listItems = numbers.map((number, index) =>
 );
 ```
 
-Индекс в качестве ключа использовать плохо,
-потому что сортировка может поменяться
+Using an index as a key is bad because sorting can change.
 
-Подробнее в части *Reconciliation*
-
-***
-
-### Задача 2.2. List
+More details in the *Reconciliation* section.
 
 ***
 
-### Ветвления
+### Task 2.2. List
+
+***
+
+### Branching
 
 **if-else**
 ```js
@@ -545,7 +550,7 @@ if (isLoggedIn) {
 return <GuestGreeting />;
 ```
 
-**Тернарный оператор**
+**Ternary Operator**
 ```js
 The user is <b>{isLoggedIn ? 'currently' : 'not'}</b> logged in.
 ```
@@ -558,7 +563,7 @@ The user is <b>{isLoggedIn ? 'currently' : 'not'}</b> logged in.
 
 ***
 
-### Скрыть элемент
+### Hide element
 
 ```js
 function WarningBanner(props: Props) {
@@ -574,11 +579,11 @@ function WarningBanner(props: Props) {
 }
 ```
 
-Можно вернув `null`, `undefined` или `false`
+You can return `null`, `undefined` or `false`
 
 ***
 
-### Задача 2.3. Condition
+### Task 2.3. Condition
 
 </script></section>
 
@@ -588,18 +593,18 @@ function WarningBanner(props: Props) {
 
 <section data-markdown><script type="text/template">
 
-## 3. Компоненты
+## 3. Components
 
 ***
 
-### Что такое компоненты
+### What are Components
 
-Они похожи на функции, возвращающие узлы VirtualDOM
+They are like functions that return VirtualDOM nodes
 ```html
 <MyComponent a="1" b="message" />
 ```
 
-У них могут быть вложенные узлы
+They can have nested nodes
 ```html
 <Parent>
   <Child />
@@ -607,14 +612,14 @@ function WarningBanner(props: Props) {
 </Parent>
 ```
 
-У них может быть внутреннее состояние
+They can have internal state
 ```html
 <TextInput defaultValue="Let's go" />
 ```
 
 ***
 
-### Функциональные компоненты
+### Functional Components
 
 ```js
 function MyComponent(props: Props): ReactNode {
@@ -624,9 +629,9 @@ function MyComponent(props: Props): ReactNode {
 }
 ```
 
-Properties — входные значения компонента
+Properties — input values of the component
 
-Описание типа свойств:
+Description of property types:
 ```ts
 type Props = {
   a: number;
@@ -637,7 +642,7 @@ type Props = {
 
 ***
 
-### Деструктуризация props
+### Destructuring props
 
 ```js
 function MyComponent({a, b}: Props): ReactNode {
@@ -669,7 +674,7 @@ type ParentProps = {
 
 ### DefaultProps
 
-Рекомендуемый:
+Recommended:
 ```ts
 type MyComponentProps = {
   b?: string;
@@ -678,16 +683,16 @@ type MyComponentProps = {
 function MyComponent({b = 'по умолчанию'}: MyComponentProps): ReactNode
 ```
 
-Изначальный:
+Old React way (runtime btw):
 ```js
 MyComponent.defaultProps = {
-  b: 'по умолчанию'
+  value: 'Default'
 }
 ```
 
 ***
 
-### Определение через стрелочную функцию
+### Using arrow function
 
 ```js
 const MyComponent = ({a, b}: Props) => <div>{a} {b}</div>
@@ -697,18 +702,13 @@ const MyComponent: (props: Props) => ReactNode
   = ({a, b}: Props) => <div>{a} {b}</div>
 ```
 
-```js
-const MyComponent: React.FC<Props>
-    = ({a, b}: Props) => <div>{a} {b}</div>
-```
+***
+
+### Task 3.1. ExtractComponent
 
 ***
 
-### Задача 3.1. ExtractComponent
-
-***
-
-### Классы-компоненты
+### Class-component
 
 ```js
 class MyComponent extends React.Component<Props> {
@@ -717,7 +717,7 @@ class MyComponent extends React.Component<Props> {
   }
 
   render() {
-    // Деструктурирующее присваивание
+    // Destructuring
     const { a, b } = this.props;
     return (
 	  <div>{a} {b}</div>
@@ -728,7 +728,7 @@ class MyComponent extends React.Component<Props> {
 
 ***
 
-### Компоненты с состоянием
+### Components with state (Stateful)
 
 ```js
 class Counter extends React.Component<Props, State> {
@@ -736,56 +736,58 @@ class Counter extends React.Component<Props, State> {
     super(props);
 	this.state = { value: props.defaultValue, checked: false };
   }
+  handleClick = () => {
+    this.setState({
+      value: this.state.value + this.props.step
+    });
+  }
   render() {
     return <div onClick={this.handleClick}
                 className={this.state.checked && 'checked'}
            >{this.state.value}</div>;
   }
-  handleClick = () => {
-    this.setState({
-	  value: this.state.value + this.props.step
-	});
-  }
 }
 ```
 
 ***
 
-### Нюансы
+### Nuances
 
 ```js
-// Стрелочные функции в JS берут this там, где создаются,
-// поэтому их можно безопасно передавать в onClick
+// Arrow functions in JS capture 'this' where they are created,
+// so they can be safely passed to onClick
 handleClick = () => {
-  // В state есть value и checked, но передаем мы одно — только оно и обновится
+  // In state, there are value and checked,
+  // but we pass only one — it will be updated
   this.setState({
     value: this.state.value + this.props.step
   });
-  // Здесь this.state.value еще имеет старое значение.
+  // Here, this.state.value still has the old value.
 }
 ```
 <br>
-Нельзя просто взять и написать `this.state.value = newValue`
-React это не отследит и не отрисует изменения
+You can't just write `this.state.value = newValue`
+React won't track and render the changes
 
 ***
 
-### Задача 3.2. Toggle
+### Task 3.2. Toggle
 
 ***
 
 ### Functional vs Class
 
-- Изначально классы-компоненты давали больше возможностей, чем функции-компоненты,
-но после появления хуков возможности стали одинаковыми
-- Функции-компоненты однозначно удобны для создания маленьких компонентов
-- Для больших компонентов выбор в пользу классов-компонентов не очевиден
+- Initially, class components provided more capabilities than functional components, but with the introduction of Hooks, capabilities became the same
+- Functional components are definitely convenient for creating small components
+- For large components, the choice in favor of class components is not obvious
+
+##### Don't use class components in production (except ErrorBoundary)
 
 ***
 
-### Управляемые vs Неуправляемые
+### Controlled vs Uncontrolled
 
-**Управляемый input**
+**Controlled input**
 ```js
 render() {
   return <input value={this.state.value} onChange={this.handleChange} />;
@@ -798,13 +800,12 @@ handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 }
 ```
 
-**Неуправляемый input**
+**Uncontrolled input**
 ```js
 <input defaultValue="default text"/>;
 ```
 
-Если в `value` управляемого передать `undefined`,
-то `input` станет неуправляемым!
+If you pass `undefined` to the `value` of a controlled component, the `input` will become uncontrolled!
 
 ***
 
@@ -826,18 +827,18 @@ handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
 ***
 
-### Lifting state up
+### Lifting State Up
 
-Пусть компонент A хранит в состоянии valueA
-Пусть компонент B хранит в состоянии valueB
+Let component A store `valueA` in its state
+Let component B store `valueB` in its state
 
-Если оказывается, что эти значения необходимо изменять согласовано, то надо поднять valueA и valueB в состояние родительского компонента
+If it turns out that these values need to be changed consistently, then you need to lift `valueA` and `valueB` to the state of the parent component
 
-Это техника *Lift state up*
+This is the *Lift State Up* technique
 
 ***
 
-### Задача 3.3. MoneyConverter
+### Task 3.3. MoneyConverter
 
 </script></section>
 
@@ -847,11 +848,11 @@ handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
 <section data-markdown><script type="text/template">
 
-## 4. Жизненный цикл компонента
+## 4. Component life cycle
 
 ***
 
-### Вехи жизни компонента
+### Component life cycle stages
 
 - Mounting
 - Updating
@@ -860,22 +861,19 @@ handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
 ***
 
-### Методы жизненного цикла
+### Life cycle methods
 ```js
 // Mounting
 constructor()
 static getDerivedStateFromProps()
-componentWillMount() / UNSAFE_componentWillMount()
 render()
 componentDidMount()
 ```
 
 ```js
 // Updating
-componentWillReceiveProps() / UNSAFE_componentWillReceiveProps()
 static getDerivedStateFromProps()
 shouldComponentUpdate()
-componentWillUpdate() / UNSAFE_componentWillUpdate()
 render()
 getSnapshotBeforeUpdate()
 componentDidUpdate()
@@ -893,17 +891,10 @@ componentDidCatch()
 
 ***
 
-`componentWillMount` признан небезопасным,
-потому что в нем стали делать запросы на сервер, например
-
-А ведь React не гарантирует, что:
- - после componentWillMount случится render
- - componentWillMount будет вызван только один раз для каждого компонента
-
-А вот у `componentDidMount` гарантии есть:
- - он вызывается единожды
- - render уже точно случился к моменту вызова componentDidMount
- - если был вызван componentDidMount, то точно будет вызван и componentWillUnmount
+`componentDidMount` has guarantees:
+- It is called once
+- `render` has definitely occurred by the time `componentDidMount` is called
+- If `componentDidMount` is called, then `componentWillUnmount` will definitely be called as well
 
 ***
 
@@ -911,7 +902,7 @@ componentDidCatch()
 // Mounting
 componentDidMount()
 ```
-Подходит для запросов данных с сервера и подписок на события
+It is suitable for making data requests from the server and subscribing to events.
 
 <br>
 <br>
@@ -920,30 +911,11 @@ componentDidMount()
 // Unmounting
 componentWillUnmount()
 ```
-Подходит для очистки ресурсов, отписок от событий
+It is suitable for cleaning up resources, unsubscribing from events.
 
 ***
 
-### Задача 4.1. Timer
-
-***
-
-### getDerivedStateFromProps
-
-Создан, чтобы обновлять state по новым props
-
-```js
-// Mounting
-static getDerivedStateFromProps(nextProps, prevState)
-```
-
-```js
-// Updating
-static getDerivedStateFromProps(nextProps, prevState)
-```
-
-Должен возвращать только измененные свойства state
-Если возвращает null, то обновлять state не нужно
+### Task 4.1. Timer
 
 </script></section>
 
