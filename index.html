@@ -923,21 +923,21 @@ It is suitable for cleaning up resources, unsubscribing from events.
 
 <section data-markdown><script type="text/template">
 
-## 5. Доступ к DOM
+## 5. Access to the DOM
 
 ***
 
-### Зачем нужен доступ к DOM
+### Why access to the DOM is needed
 
-- Управление фокусом, выделением текста или проигрыванием аудио/видео
-- Управление анимациями, получение положения элемента на&nbsp;странице или его скролла
-- Интеграция со сторонними библиотеками, управляющими DOM
+- Control over focus, text selection, or playing audio/video
+- Animation control, obtaining the position of an element on the page, or its scrolling
+- Integration with third-party libraries that manipulate the DOM
 
 ***
 
-### Создание ссылок
+### Creating Refs
 
-** Способ 16+ **
+**Method 16+**
 ```js
 constructor() {
   this.myRef = React.createRef<HTMLDivElement>();
@@ -946,10 +946,10 @@ constructor() {
 render () {
   return <div ref={this.myRef} />
 }
-// После render ссылка окажется в this.myRef.current
+// After rendering, the reference will be available in `this.myRef.current`.
 ```
 
-** Старый способ **
+** Old way **
 ```js
 myRef: HTMLDivElement | null
 
@@ -960,12 +960,12 @@ constructor() {
 render () {
   return <div ref={r => this.myRef = r} />
 }
-// После render ссылка окажется в this.myRef
+// After rendering, the reference will be available in `this.myRef`.
 ```
 
 ***
 
-### Можно повешать на элемент или компонент
+### You can get Ref of element or component
 
 ```js
 <input ref={this.myRef} /> // this.myRef = HTMLInputElement
@@ -980,7 +980,7 @@ render () {
 
 ***
 
-### Задача 5. Focus
+### Task 5. Focus
 
 </script></section>
 
@@ -992,7 +992,7 @@ render () {
 
 ### Hooks
 
-Функции, которые позволяют в функциональных компонентах использовать фичи классов
+Functions that allow using class features in functional components
 
 ***
 
@@ -1029,14 +1029,14 @@ function MyFunctionalComponent({value}) {
     <div>
       <input type="text" ref={inputRef} />
       <button onClick={() => inputRef.current.focus()}>
-        Установить фокус
+        Set focus
       </button>
     </div>
   );
 }
 ```
 
-`useRef` — это аналог свойства объекта в классе-компоненте
+`useRef` — This is analogous to a property of an object in a class component.
 
 ***
 
@@ -1047,9 +1047,9 @@ function MyFunctionalComponent({value}) {
   const timer = useRef(null);
 
   useEffect(() => {
-    timer.current = setTimeout(console.log, 10000, 'Прошло 10000 мс');
+    timer.current = setTimeout(console.log, 10000, '10000 milliseconds have passed');
 
-    return () => { // вызывается перед повтором эффекта и в componentWillUnmount
+    return () => { // Called before the effect is repeated and in componentWillUnmount.
       clearTimeout(timer.current);
     }
   }, [value]);
@@ -1057,21 +1057,23 @@ function MyFunctionalComponent({value}) {
   ...
 }
 ```
-Срабатывание эффекта в зависимости от второго параметра:
-- Если `[value]`, то при `componentDidMount` и при изменении `value`
-- Если `[]`, то один раз при `componentDidMount`
-- Если `undefined`, то после каждого рендера:
-`componentDidMount` и `componentDidUpdate`
+Execution of the effect depending on the second parameter:
+- If `[value]`, then during `componentDidMount` and upon changing `value`
+- If `[]`, then once during `componentDidMount`
+- If `undefined`, then after each render:
+`componentDidMount` and `componentDidUpdate`
 
 ***
 
-### Помните?
+### Remember?
 
 ```js
 class TimeDisplay extends React.Component {
   constructor() {
     super();
-    this.state = { localTime: new Date() };
+    this.state = {
+      localTime: new Date()
+    };
     this.localTickInterval = null;
   }
   componentDidMount() {
@@ -1086,7 +1088,7 @@ class TimeDisplay extends React.Component {
 
 ***
 
-### А теперь на хуках! 😎
+### And now with Hooks! 😎
 
 ```js
 function TimeDisplay() {
@@ -1109,25 +1111,47 @@ function TimeDisplay() {
 
 ***
 
-### Почему хуки появились?
+### Or simpler! 😎
 
-- Никто не понимает, как работает ***this*** в js
-- Переиспользовать невизуальную логику при помощи создания своих хуков
-- Аггрегирование связанной логики в одном месте (напр. подписки и отписки)
+```js
+function TimeDisplay() {
+  const [localTime, setLocalTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setLocalTime(new Date());
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    }
+  }, []);
+
+  return (<div>{localTime.toLocaleTimeString()}</div>);
+}
+```
 
 ***
 
-### Правило хуков
+### Why were hooks introduced?
 
-- всегда начинаются со слова ***use***
-- работают только в функциональных компонентах
-- **используются в начале функционального компонента**
+- Nobody understands how ***this*** works in js
+- Reuse non-visual logic by creating custom hooks
+- Aggregate related logic in one place (e.g., subscriptions and unsubscriptions)
 
 ***
 
-### Почему хуки только в начале?
+### Rule of Hooks
 
-Можно не в начале, но точно не надо в циклах или условных выражениях, ведь **React опирается на порядок вызова хуков**
+- Always start with the word ***use***
+- Work only in functional components
+- **Used at the beginning of a functional component**
+
+***
+
+### Why only at the beginning?
+
+It's possible not at the beginning, but definitely not in loops or conditional statements, because **React relies on the order of hook calls**
 
 ```js
 function Form() {
@@ -1148,28 +1172,28 @@ function Form() {
 
 ***
 
-Первый вызов:
+First call:
 ```js
-useState('Mary')        // 1. Создается состояние со значением 'Mary'
-useEffect(persistForm)  // 2. Регистрируется эффект сохранения в форму
-useState('Poppins')     // 3. Создается состояние со значением 'Poppins'
+useState('Mary')        // 1. Creates state with value 'Mary'
+useEffect(persistForm)  // 2. Registers the form persistence effect
+useState('Poppins')     // 3. Creates state with value 'Poppins'
 ```
 
-Второй вызов, в котором есть условие:
+Second call with a condition:
 ```js
-useState('Mary')          // 1. Читает значение из состояния, `Mary` игнорируется
-// useEffect(persistForm) // 🔴 Этот хук пропущен...
-useState('Poppins')       // 🔴 2 (но был 3). Не получается зачитать фамилию
+useState('Mary')          // 1. Reads the value from state, `Mary` is ignored
+// useEffect(persistForm) // 🔴 This hook is skipped...
+useState('Poppins')       // 🔴 2 (but was 3). Unable to read the last name
 ```
 
 ***
 
-### Задача 6. Hooks
+### Task 6. Hooks
 
 ***
 
-### Еще немного редких хуков
-для продвинутых пользователей 😉
+### A few more rare hooks
+for advanced users 😉
 
 ***
 
@@ -1191,7 +1215,7 @@ function MyFunctionalComponent({value}) {
 }
 ```
 
-`useMemo` — для кэширования результата тяжеловесных вычислений или ссылки на объект
+`useMemo` — For caching the result of heavy computations or referencing an object
 
 ***
 
@@ -1202,92 +1226,34 @@ function MyFunctionalComponent() {
     const logClick = useCallback(() => {
       console.log('Click');
     }, []);
-    // Функция будет создаваться при каждом рендере,
-    // но ссылка в переменной не изменится
+    // The function will be created with each render,
+    // but the reference in the variable will not change
 
     return (
         <>
             [1, 2, 3, 4, 5].map(value =>
-              (<button onClick={logClick}>Кнопка №{value}</button>)
+              (<button onClick={logClick}>Button №{value}</button>)
             )
         </>
     );
 }
 ```
 
-`useCallback` — *useMemo* для функций
-Позволяет закэшировать ссылку на функцию
+`useCallback` — *useMemo* for functions
+Allows you to cache a reference to the function
 
 ***
 
-### Когда использовать?
+### When to use?
 
-1. Хуки позволяют не использовать ключевое словов ***this***, благодаря чему код выглядит чище
-2. Компоненты реализованные на хуках почти всегда занимают меньше места, и благодаря этому проще читаются
-3. Хуки проще типизировать
-4. Большой компонент на хуках может стать сложным для прочтения. В таком случае стоит подумать о разбиении компонента на части или о переписывании компонента в виде класса
+1. Hooks eliminate the need for the ***this*** keyword, making the code cleaner.
+2. Components implemented with hooks almost always take up less space, making them easier to read.
+3. Hooks are easier to type.
+4. A large hook-based component can become difficult to read. In such cases, consider breaking the component into parts.
 
 
 </script></section>
 <!-- ************************************************* -->
-
-
-<section data-markdown><script type="text/template">
-
-## Практика
-
-***
-
-### Задача
-
-<img src="userProfile/drafts/reactForm.png" alt="Результат выполнения задачи userProfile">
-
-***
-
-### Гайды
-
-<a href="https://guides.kontur.ru/" target="_blank"><img src="assets/guides.png" alt="Скришнот Контур.Гайдов"></a>
-
-***
-
-### Библиотека контролов React-UI
-
-<a href="http://tech.skbkontur.ru/react-ui/"><img src="assets/react-ui.png" style="border: 1px solid #aaa"
-                                                  alt="Скришнот React-UI"></a>
-
-***
-
-### Описание компонентов
-
-<a href="http://tech.skbkontur.ru/react-ui/#/Input" target="_blank">http://tech.skbkontur.ru/react-ui/#/Input</a>
-
-<img src="assets/react-ui-important.png" alt="Обрати внимание на пункты view code и props&methods">
-
-
-***
-
-### Задача userProfile
-
-1. Перейди в директорию задачи: в корне проекта директория userProfile
-2. Установи в ней зависимости `npm i`
-3. Запусти новый сервер командой `npm start`
-4. В браузере открой <a href="http://localhost:8081">http://localhost:8081</a>
-5. В файле `src/index.tsx` описание задания
-
-
-***
-
-### Обсуждение. Пункт 7.
-
-1. Где хранить данные?
-2. Когда обновлять данные?
-3. Как сравнивать предыдущее и текущее значение?
-
-
-</script></section>
-
-<!-- ************************************************* -->
-
 
 <section data-markdown><script type="text/template">
 
