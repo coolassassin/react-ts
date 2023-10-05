@@ -1261,7 +1261,7 @@ Allows you to cache a reference to the function
 
 ***
 
-### Монтирование
+### Mounting
 
 ```js
 class Parent extends React.Component {
@@ -1281,10 +1281,9 @@ class Parent extends React.Component {
 
 ***
 
-### Алгоритм монтирования
+### Mounting Algorithm
 
-Все начинается с `ReactDom.render` или другого `render`
-...
+It all starts with `createRoot(domNode).render`, `ReactDom.render` or another `render`...
 - Parent constructor
 - Parent render
   - h1 render
@@ -1294,25 +1293,23 @@ class Parent extends React.Component {
 
 ***
 
-### Обновление
+### Updating
 
-Может ли компонент поменять свое содержимое?
-Может ли компонент перерисовать себя?
-
-***
-
-Компонент не может перерисовать себя или поменять содержимое,
-но может поменять состояние через `setState` и будет перерисован
-
-Компонент будет перерисован, если его *родительский компонент* будет перерисован
-
-*Компонент пассивен*: когда и что происходит решает React
+Can a component change its content? Can a component redraw itself?
 
 ***
 
-### Алгоритм обновления
+A component cannot redraw itself or change its content, but it can change its state via `setState` and will be redrawn.
 
-**С чего все начинается?**
+A component will be redrawn if its *parent component* is redrawn.
+
+*Components are passive*: React decides when and what happens.
+
+***
+
+### Updating Algorithm
+
+**Where does it all begin?**
 
 ```js
 class Parent extends React.Component {
@@ -1333,20 +1330,20 @@ class Parent extends React.Component {
 
 ***
 
-Любое обновление начинается со `setState` на некотором уровне
+Any update begins with `setState` at some level.
 
 - Parent setState
 - Parent render
   - h1 render
-  - Child получает новые свойства
+  - Child receives new props
   - Child render
     - ...
 
-*Но возможны варианты!*
+*But there are variations!*
 
 ***
 
-### Пусть рендер выглядит так
+### Let the render look like this
 
 ```js
   if (a > 10) {
@@ -1369,7 +1366,7 @@ class Parent extends React.Component {
 
 ***
 
-### На месте Child оказался компонент Bastard
+### The component Bastard ended up in place of Child
 
 ```js
 <div>
@@ -1379,22 +1376,22 @@ class Parent extends React.Component {
 </div>
 ```
 
-Даже если нужный Child идет сразу после...
+Even if the required Child comes right after...
 
 ```html
-Старый Child сносится: componentWillUnmount
+The old Child is removed: componentWillUnmount
 
-Bastard размещается: constructor, ... render, componentDidMount
+Bastard is placed: constructor, ... render, componentDidMount
 
-Новый Child размечается: constructor, ... render, componentDidMount
+The new Child is mounted: constructor, ... render, componentDidMount
 ```
 
 ***
 
-### Child находится на прежнем месте
+### Child is in the same place
 
-React пытается переиспользовать Child,
-вызывая методы жизненного цикла
+React tries to reuse Child,
+calling lifecycle methods
 
 ```js
 // Updating
@@ -1407,7 +1404,7 @@ componentDidUpdate()
 
 ***
 
-### Так можно исправить ситуацию
+### You can fix the situation like this
 
 ```js
 return (
@@ -1422,7 +1419,7 @@ return (
 
 ***
 
-### Контроль обновления
+### Update Control
 
 ```js
 // Updating
@@ -1431,15 +1428,15 @@ shouldComponentUpdate(nextProps, nextState)
 
 ***
 
-### Reconciliation — согласование
+### Reconciliation
 
 <p style="text-align: center"><img src="assets/should-component-update.png"></p>
 
 ***
 
-### ShouldComponentUpdate по умолчанию
+### ShouldComponentUpdate by default
 
-По сути работает так:
+Essentially, it works like this:
 ```js
 shouldComponentUpdate(nextProps, nextState) {
   return true;
@@ -1450,14 +1447,14 @@ shouldComponentUpdate(nextProps, nextState) {
 
 ### PureComponent
 
-По сути переопределяет SCU так:
+Essentially overrides SCU like this:
 ```js
 shouldComponentUpdate(nextProps, nextState) {
   return !shallowEqual(this.props, nextProps);
 }
 ```
 
-Чтобы использовать:
+To use:
 ```js
 class MyPureComponent extends React.PureComponent {
   ...
@@ -1466,7 +1463,7 @@ class MyPureComponent extends React.PureComponent {
 
 ***
 
-#### PureComponent защищает от render родителя
+#### PureComponent protects from the parent's render
 
 ```js
 class Child extends React.PureComponent { ... }
@@ -1488,7 +1485,7 @@ class Parent extends React.Component {
 
 ***
 
-#### Но не всегда...
+#### But not always...
 
 ```js
 class Child extends React.PureComponent { ... }
@@ -1508,30 +1505,30 @@ class Parent extends React.Component {
 }
 ```
 
-Так зачем мы пишем стрелочные-методы вида handleClick?
+#### So why do we write arrow methods like handleClick?
 
 ***
 
-#### shouldComponentUpdate и PureComponent для функции-компонента
+#### shouldComponentUpdate and PureComponent for Functional Components
 
 ```js
 const Button = props => {
-  // ваш компонент
+  // your component
 };
 
 const areEqual = (prevProps, nextProps) => {
-  // возвращаем true, если при изменении пропсов не нужен рендер
+  // return true if a render is not needed when props change
 };
 
 export default React.memo(Button, areEqual);
 ```
 
-Второй параметр в *React.memo*, опциональный
-По умолчанию компонент будет работать как *PureComponent*
+The second parameter in *React.memo* is optional.
+By default, the component will behave like *PureComponent*.
 
 ***
 
-#### Мемоизация значений в Hooks
+#### Memoizing Values in Hooks
 
 ```js
 const MyFunctionalComponent = ({ value }) => {
@@ -1551,12 +1548,11 @@ const MyFunctionalComponent = ({ value }) => {
 });
 ```
 
-`useCallback` и `useMemo` обычно используется, если целевой компонент — это *PureComponent*, класс-компонент с реализованным *shouldComponentUpdate* или функциональный компонент обернутый в *React.memo*
-В остальных случаях мемоизация может быть избыточной
+`useCallback` and `useMemo` are usually used if the target component is a *PureComponent*, a class component with implemented *shouldComponentUpdate*, or a functional component wrapped in *React.memo*. In other cases, memoization may be unnecessary.
 
 ***
 
-### Задача 7. UsersTable
+### Task 7. UsersTable
 
 
 </script></section>
@@ -1571,43 +1567,41 @@ const MyFunctionalComponent = ({ value }) => {
 
 ***
 
-*Higher Order Components (HOC)* — функции
-вида Component → Component
+*Higher Order Components (HOC)* — functions of the form fn(Component) → Component
 
-Используя HOC, можно создавать новые улучшенные компоненты из обычных:
+Using HOCs, you can create enhanced components from regular ones:
 ```js
-const EnhancedComponent = enhance(JustComponent); // enhance — это HOC
+const EnhancedComponent = enhance(JustComponent); // enhance is an HOC
 ```
 
 ***
 
-### Что происходит в enhance
+### What happens in enhance
 
 ```js
-// Функция принимает компонент...
+// The function takes a component...
 function enhance<T extends {}>(WrappedComponent: React.ComponentType<T>) {
-      // ...создает новый компонент...
+      // ...create new component...
       const Enhanced: React.FC<EnhanceHOCProps & T> = props => {
 
-        return ( // Рендерим новый компонент
+        return ( // Render new component
             <span className={props.value2}>
                 { props.value1 }
                 <WrappedComponent {...props} isSelected={true} />
             </span>
         )}
 
-    return Enhanced; // ...и возвращает созданный компонент.
+    return Enhanced; // ...and returns created component
 }
 ```
 
 ***
 
-### Договоренности
+### Conventions
 
-1. Не мутировать исходный компонент
-2. Все пропсы прокидывать дальше,
-   кроме специально переданных для обертки
-3. Задавать displayName: помогает при дебаге
+1. Do not mutate the original component.
+2. Pass all props down, except those specifically passed for wrapping.
+3. Set displayName: it helps with debugging.
 
 ```js
 const wrappedName =
@@ -1636,9 +1630,12 @@ function enhance<T extends {}>(WrappedComponent: React.ComponentType<T>)  {
   const Enhanced: React.FC<EnhanceHOCProps & T> = props => {
     return <WrappedComponent ref={forwardedRef} {...rest} />
   }
-  // React не передает значение атрибута "ref" в props обычных компонентов.
-  // Но компонент React.forwardRef дает нам доступ к значению атрибута "ref"
-  // и теперь это значение можно передать компоненту под другим именем.
+  // React does not pass the value of the "ref" attribute to props of
+  // regular components.
+  // But the React.forwardRef component gives us access to the
+  // value of the "ref" attribute,
+  // and now this value can be passed to the component
+  // under a different name.
   return React.forwardRef((props, ref) => {
     return <Enhanced {...props} forwardedRef={ref} />;
   });
@@ -1647,11 +1644,11 @@ function enhance<T extends {}>(WrappedComponent: React.ComponentType<T>)  {
 
 ***
 
-### Задача 8. FormRow
+### Task 8. FormRow
 
 ***
 
-### Примеры HOC
+### HOC examples
 
 Роутер
 ```js
@@ -1670,14 +1667,14 @@ const ConnectedComment = connect(commentSelector, commentActions)(CommentList);
 
 ***
 
-### Основные сценарии HOC
+### Main scenarios of HOC
 
-1. Добавление данных компоненту. Как в примерах с Роутером и Редаксом
-2. Добавление разметки и методов. Как в решенной задачке
+1. Adding data to a component. As in examples with Router and Redux.
+2. Adding markup and methods. As in the solved task.
 
 ***
 
-### Добавление разметки без логики
+### Adding markup without logic
 
 ```js
 const FormRow = ({label, children}) => {
@@ -1690,7 +1687,7 @@ const FormRow = ({label, children}) => {
 }
 ```
 
-Также для расширения функциональности компонента можно использовать паттерн [RenderProps](https://ru.reactjs.org/docs/render-props.html)
+Also, to extend the functionality of a component, you can use the pattern [RenderProps](https://react.dev/reference/react/Children#calling-a-render-prop-to-customize-rendering)
 
 ***
 
@@ -1717,9 +1714,9 @@ export default connect(
 
 ***
 
-### Переиспользование логики в функциональных компонентах
+### Reusing logic in functional components
 
-При написании компонентов на *Hooks* можно создавать кастомные хуки, избегая при этом *WrapperHell*
+When writing components with *Hooks*, you can create custom hooks, avoiding *WrapperHell*.
 
 ```js
 function useMyOwnHook(initialValue) {
@@ -1753,19 +1750,19 @@ function useMyOwnHook(initialValue) {
 
 ***
 
-Создание контекста:
+Creating a context:
 ```js
 const CakeContext = React.createContext();
 ```
 
-Поставка значения:
+Supplying a value:
 ```html
 <CakeContext.Provider value={cheeseCake}>
   ...
 </CakeContext.Provider>
 ```
 
-Потребление значения:
+Consuming a value:
 ```html
 <CakeContext.Consumer>
   {cake => <Hungry food={cake} />}
@@ -1774,9 +1771,9 @@ const CakeContext = React.createContext();
 
 ***
 
-### Потребление значения в функциональных компонентах
+### Consuming a value in functional components
 
-Без хуков:
+Without hooks:
 ```js
 function Glutton() {
   return (
@@ -1787,7 +1784,7 @@ function Glutton() {
 }
 ```
 
-С хуками:
+With hooks:
 ```js
 function Glutton() {
   const cake = useContext(CakeContext);
@@ -1797,25 +1794,8 @@ function Glutton() {
 
 ***
 
-### Задача 9. ColorsOfTime
+### Task 9. ColorsOfTime
 
-
-</script></section>
-
-
-<!-- ************************************************* -->
-
-
-<section data-markdown><script type="text/template">
-
-## Заключение
-
-
-***
-
-### Обратная связь
-Заполни форму обратной связи по ссылке
-<a href="http://bit.ly/kontur-courses-feedback">http://bit.ly/kontur-courses-feedback</a>
 
 </script></section>
 
