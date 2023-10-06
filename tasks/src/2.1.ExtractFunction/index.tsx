@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 
 /**
- * Highlight the method for rendering a lot (renderLot), the method for rendering a post (renderPost), and use them.
+ * Extract the method for rendering a lot (renderLot), the method for rendering a post (renderPost), and use them.
  */
 
 const domNode = document.getElementById('app') as HTMLElement;
